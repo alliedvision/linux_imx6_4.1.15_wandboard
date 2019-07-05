@@ -1,0 +1,134 @@
+/*
+ * Copyright 2013 Freescale Semiconductor, Inc.
+ *
+ * Author: Fabio Estevam <fabio.estevam@freescale.com>
+ * Copyright 2016 Technexion Ltd.
+ * Copyright 2014 John Weber
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
+/dts-v1/;
+
+#include <dt-bindings/interrupt-controller/irq.h>
+#include "imx6dl.dtsi"
+#include "imx6qdl-wandboard.dtsi"
+
+/ {
+	model = "Wandboard i.MX6 Dual Lite Board";
+	compatible = "wand,imx6dl-wandboard", "fsl,imx6dl";
+
+	bcmdhd_wlan_0: bcmdhd_wlan@0 {
+		compatible = "android,bcmdhd_wlan";
+		pinctrl-0 = <&pinctrl_wifi_ctrl>;
+		wlreg_on-supply = <&wlreg_on>;
+	};
+
+	regulators {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		wlreg_on: fixedregulator@100 {
+			compatible = "regulator-fixed";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			regulator-name = "wlreg_on";
+			gpio = <&gpio6 0 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+	};
+
+	gpio-edm {
+		compatible = "gpio-edm";
+
+		wl_on {
+			label = "wl_on";
+			gpios = <&gpio5 31 1>;
+			dir   = "out";
+		};
+
+		wl_reg {
+			label = "wl_reg";
+			gpios = <&gpio1 26 1>;
+			dir   = "out";
+		};
+
+		bluetooth-on {
+			label = "bluetooth-on";
+			gpios = <&gpio5 21 1>;
+			dir   = "out";
+		};
+
+		bluetooth-wake {
+			label = "bluetooth-wake";
+			gpios = <&gpio5 30 1>;
+			dir   = "in";
+		};
+
+		bluetooth-host-wake {
+			label = "bluetooth-host-wake";
+			gpios = <&gpio5 20 1>;
+			dir   = "in";
+		};
+	};
+
+};
+
+&ldb {
+	lvds-channel@0 {
+		crtc = "ipu1-di1";
+	};
+};
+
+&mxcfb1 {
+	status = "okay";
+};
+
+&mxcfb2 {
+	status = "okay";
+};
+
+#if 0
+&mxcfb3 {
+	status = "okay";
+};
+
+&mxcfb4 {
+	status = "okay";
+};
+#endif
+
+&epdc {
+	status = "disabled";
+};
+
+&iomuxc {
+	pinctrl-names = "default";
+
+	imx6qdl-wandboard {
+
+		pinctrl_wifi_ctrl: wifi_ctrlgrp {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_DAT14__GPIO6_IO00 0x000b0			/* wifi-reset */
+				MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31 0x000b0			/* wifi-on */
+				MX6QDL_PAD_ENET_RXD1__GPIO1_IO26  0x000b0			/* wifi-reg-on */
+				MX6QDL_PAD_ENET_TXD1__GPIO1_IO29  0x80000000		/* wifi-host-wake */
+
+			>;
+		};
+
+		pinctrl_bt_ctrl: bt_ctrlgrp {
+			fsl,pins = <
+				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21	0x000b0		/* bluetooth-reg-on */
+				MX6QDL_PAD_CSI0_DAT12__GPIO5_IO30	0x80000000	/* bluetooth-wake */
+				MX6QDL_PAD_CSI0_DATA_EN__GPIO5_IO20	0x80000000	/* bluetooth-host-wake */
+			>;
+		};
+	};
+};
