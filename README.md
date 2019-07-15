@@ -7,6 +7,7 @@ Wandboard with i.MX6QP, Linux kernel version 4.1.15
 * WB-IMX6QP
 * WB-IMX6Q
 * WB-IMX6U
+* WB-IMX6S
 
 For camera evaluation, we provide an SD card image and the precompiled kernel (including camera driver) at:
 https://www.alliedvision.com/en/products/software/embedded-software-and-drivers.html
