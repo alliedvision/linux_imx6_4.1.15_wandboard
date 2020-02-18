@@ -1,6 +1,7 @@
 # imx6_4.1.15_wandboard
 
 Driver for Allied Vision Alvium cameras with MIPI CSI-2 interface.
+![Alvium camera](https://cdn.alliedvision.com/fileadmin/content/images/cameras/Alvium/various/alvium-cameras-models.png)
 
 Supported boards:
 Wandboard with i.MX6QP, Linux kernel version 4.1.15
